@@ -7,60 +7,78 @@ let dom = {
 };
 
 let todos = [];
+let count = 0;
+let maxTodos = 10;
+
+function displaySummary() {
+    dom.completedOutput.innerHTML = `${count}`;
+    dom.totalOutput.innerHTML = `${todos.length}`;
+}
 
 function displayTodos() {
     dom.todoList.innerHTML = "";
-    todos.forEach(el => {
-        dom.todoList.innerHTML += `<li data-id=${el.id} class="${el.completed}">
-                                    <span>${el.id}.</span>
-                                    <span>${el.title}</span>
-                                    <div class="removeTodo">
-                                        <i class="far fa-trash-alt"></i>
-                                    </div>
-                                </li>`;
+    todos.forEach(todo => {
+        dom.todoList.innerHTML +=   `<li data-id=${todo.id} class="${todo.completed}">
+                                        <span>${todo.id}.</span>
+                                        <span>${todo.title}</span>
+                                        <div class="removeTodo">
+                                            <i class="far fa-trash-alt"></i>
+                                        </div>
+                                    </li>`;
     });
-    let count = 0;
-    todos.forEach(el => {el.completed === "completed" ? count++ : count=count});
-    dom.completedOutput.innerHTML = `${count}`;
-    dom.totalOutput.innerHTML = `${todos.length}`;
+
+    count = 0;
+    todos.forEach(todo => {count = (todo.completed === "completed") ? count+1 : count;});
+    displaySummary()
 };
 
 function deleteTodos(findID) {
-    let indexToFind = todos.findIndex(el => el.id === findID);
-    todos.splice(indexToFind,1);
+    let indexToFind = todos.findIndex(todo => todo.id === findID*1);
+    todos.splice(indexToFind, 1);
     displayTodos();
 };
 
 function markCompletedTodos(findID) {
-    let i = todos.findIndex(el => el.id === findID);
-    todos[i].completed === "completed" ? todos[i].completed = "" : todos[i].completed = "completed";
+    let i = todos.findIndex(todo => todo.id === findID*1);
+    todos[i].completed = (todos[i].completed === "completed") ? "" : "completed";
     displayTodos();
 };
 
 function createTodos() { 
-    dom.input.value === "" ? alert("YOU CAN'T CREATE EMPTY TODO!") : 
-    todos.length < 1 ? id = 1 : id = (todos[todos.length-1].id)*1+1;
-    let newEl = {
-        id: `${id}`,
-        title: dom.input.value,
-        completed: ""
-    };
-    todos = [...todos, newEl];
+    if (dom.input.value === "") {
+        alert("YOU CAN'T CREATE EMPTY TODO!");
+    } else if (todos.length === maxTodos ){
+        alert("YOU CAN'T CREATE MORE TODOS!");
+    } else {
+        let id = (todos.length < 1) ?  1 : (todos[todos.length-1].id)*1+1;
+        let newEl = {
+            id: id,
+            title: dom.input.value,
+            completed: "",
+        };
+        todos = [...todos, newEl];
+    }
     displayTodos();
     dom.input.value = "";
+    dom.input.focus();
 };
+
+displaySummary();
 
 dom.btnAdd.addEventListener('click', createTodos);
 
 dom.input.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
-        createTodos()
+        createTodos();
     }
 });
 
 dom.todoList.addEventListener('click', function(e){
-        e.target.tagName === "I"    ?   deleteTodos(e.target.parentElement.parentElement.dataset.id)
-    :   e.target.tagName === 'LI'   ?   markCompletedTodos(e.target.dataset.id)
-    :   e.target.tagName === 'SPAN' ?   markCompletedTodos(e.target.parentElement.dataset.id)
-    :   console.log("Задължително ли трябва да има else накрая?");
+    switch (e.target.tagName) {
+        case "I"    : deleteTodos(e.target.parentElement.parentElement.dataset.id); break;
+        case 'DIV'  : deleteTodos(e.target.parentElement.dataset.id); break;
+        case 'LI'   : markCompletedTodos(e.target.dataset.id); break;
+        case 'SPAN' : markCompletedTodos(e.target.parentElement.dataset.id); break;
+        default     : console.error("Something went wrong!")
+    }
 });
