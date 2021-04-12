@@ -1,0 +1,95 @@
+$blackColor: #000;
+$backcolor: #333;
+$secondBackColor: #444;
+$firstTodoColor: #666;
+$secondTodoColor: #999;
+$colorAquamarine: #7fffd4;
+$colorwhite: #fff;
+$colorRed: #8e0000;
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    background-color: $backcolor;
+}
+.page {
+    min-width: 25em;
+    max-width: 40em;
+    margin: auto;
+}
+header {
+    font-size: 2em;
+    padding: 2em;
+    color: $colorAquamarine;
+    text-align: center;
+}
+.todo-add {
+    text-align: center;
+    padding: 1em;
+    background-color: $secondBackColor;
+}
+
+.todo-items {
+    background-color: $firstTodoColor;
+    &>:nth-child(2n){
+        background-color: $secondTodoColor;
+    }
+    li {
+        font-size: 1.2em;
+        padding-left: 1em;
+        padding-top: .5em;
+        padding-bottom: .5em;
+        
+        &:hover {
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        div {
+            float: right;
+            padding-right: 1em;
+            color: $colorRed;
+        }
+    }
+}
+
+[type=text]{
+    border-width: 0;
+    width: 20em;
+    height: 2em;
+    background-color: $secondTodoColor;
+    border-radius: .3em;
+
+    &:focus{
+        outline: none;
+        border: .12em solid $colorAquamarine;
+        border-radius: .3em;
+    }
+}
+
+.todos-total, .todos-completed {
+    padding: .5em 1em;
+    background-color: $secondBackColor;
+    color: $colorwhite;
+}
+button {
+    border-width: 0;
+    background-color: $colorAquamarine;
+    color: $blackColor;
+    border-radius: 50%;
+    width: 5em;
+    height: 5em;
+    margin-left: 1em;
+    border-style: none;
+    cursor: pointer;
+    &:focus, &:hover {
+        outline: none;
+        box-shadow: 0 0 1em $colorAquamarine;
+        font-weight: bold;
+    }
+}
+.todo-items>.completed {
+    background-color: $backcolor;
+    background-image: linear-gradient(0deg,transparent 47%, $blackColor 50%, transparent 53%);
+}
