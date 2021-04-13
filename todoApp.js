@@ -4,6 +4,7 @@ let dom = {
     todoList: document.querySelector('.todo-items'),
     totalOutput: document.querySelector('.output'),
     completedOutput: document.querySelector('.output-completed'),
+    btnClearCompleted: document.querySelector('.btnClearCompleted'),
 };
 
 let todos = [];
@@ -31,19 +32,6 @@ function displayTodos() {
     todos.forEach(todo => {count = (todo.completed === "completed") ? count+1 : count;});
     displaySummary()
 };
-
-function deleteTodos(findID) {
-    let indexToFind = todos.findIndex(todo => todo.id === findID*1);
-    todos.splice(indexToFind, 1);
-    displayTodos();
-};
-
-function markCompletedTodos(findID) {
-    let i = todos.findIndex(todo => todo.id === findID*1);
-    todos[i].completed = (todos[i].completed === "completed") ? "" : "completed";
-    displayTodos();
-};
-
 function createTodos() { 
     if (dom.input.value === "") {
         alert("YOU CAN'T CREATE EMPTY TODO!");
@@ -62,6 +50,31 @@ function createTodos() {
     dom.input.value = "";
     dom.input.focus();
 };
+
+function deleteTodos(findID) {
+    let indexToFind = todos.findIndex(todo => todo.id === findID*1);
+    todos.splice(indexToFind, 1);
+    displayTodos();
+};
+
+function markCompletedTodos(findID) {
+    let i = todos.findIndex(todo => todo.id === findID*1);
+    todos[i].completed = (todos[i].completed === "completed") ? "" : "completed";
+    displayTodos();
+    dom.btnClearCompleted.classList.remove('hidden');
+};
+
+function clearCompletedTodos() {
+    let indexToRemove = [];
+    todos.forEach(todo =>   {indexToRemove = (todo.completed === "completed") ? 
+                            [...indexToRemove, todos.findIndex( find => find.id === todo.id)] 
+                            : [...indexToRemove]});
+    while(indexToRemove.length) {
+        todos.splice(indexToRemove.pop(), 1);
+    };
+    displayTodos();
+    dom.btnClearCompleted.classList.add('hidden');
+}
 
 displaySummary();
 
@@ -82,3 +95,5 @@ dom.todoList.addEventListener('click', function(e){
         default     : console.error("Something went wrong!")
     }
 });
+
+dom.btnClearCompleted.addEventListener('click', clearCompletedTodos);

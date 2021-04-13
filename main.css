@@ -6,7 +6,7 @@ html, body {
 }
 
 .page {
-  min-width: 25em;
+  min-width: 28em;
   max-width: 40em;
   margin: auto;
 }
@@ -61,29 +61,55 @@ header {
 }
 
 .todos-total, .todos-completed {
+  float: left;
   padding: 0.5em 1em;
   background-color: #444;
   color: #fff;
+  width: 50%;
 }
 
-button {
+.todo-add-btn, .btnClearCompleted {
   border-width: 0;
   background-color: #7fffd4;
   color: #000;
-  border-radius: 50%;
-  width: 5em;
-  height: 5em;
-  margin-left: 1em;
   border-style: none;
   cursor: pointer;
 }
-button:focus, button:hover {
+.todo-add-btn:focus, .todo-add-btn:hover, .btnClearCompleted:focus, .btnClearCompleted:hover {
   outline: none;
   box-shadow: 0 0 1em #7fffd4;
   font-weight: bold;
 }
 
+.todo-add-btn {
+  border-radius: 50%;
+  width: 5em;
+  height: 5em;
+  margin-left: 1em;
+}
+
+.btnClearCompleted {
+  float: right;
+  margin-right: 2em;
+  margin-top: -0.8em;
+  width: 12em;
+  height: 2em;
+  border-radius: 1em;
+}
+
 .todo-items > .completed {
   background-color: #333;
   background-image: linear-gradient(0deg, transparent 47%, #000 50%, transparent 53%);
+}
+
+.summary {
+  background-color: #444;
+}
+
+.clearfix {
+  clear: both;
+}
+
+.hidden {
+  display: none;
 }/*# sourceMappingURL=main.css.map */
