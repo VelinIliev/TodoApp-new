@@ -17,6 +17,19 @@
                 <input type="text" autofocus placeholder="add new todo ...">
                 <button class="todo-add-btn">Add</button>
             </div>
+            <div class="filter">
+                <form action="">
+                    <label for="all" class="all-radio">
+                        <input type="radio" id="all" name="filter" value="all" checked> All 
+                    </label>
+                    <label for="completed-radio" class="completed-radio">
+                        <input type="radio" id="completed-radio" name="filter" value="completed"> Completed 
+                    </label> 
+                    <label for="active" class="active-radio">
+                        <input type="radio" id="active" name="filter" value="active"> Active 
+                    </label> 
+                </form>
+            </div>
             <ul class="todo-items">
                 
             </ul>

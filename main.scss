@@ -1,27 +1,28 @@
-$blackColor: #000;
-$backcolor: #333;
+$firstBackColor: #333;
 $secondBackColor: #444;
-$firstTodoColor: #666;
-$secondTodoColor: #999;
-$colorAquamarine: #7fffd4;
-$colorwhite: #fff;
-$colorRed: #8e0000;
+$firstTodoColor: white;
+$secondTodoColor: #ccc;
+$buttonsColor: #7fffd4;
+$completedColor: #999;
+$firstTextColor: #000;
+$secondTextColor: #fff;
+$trashColor: #8e0000;
 
 html, body {
     margin: 0;
     padding: 0;
     font-size: 16px;
-    background-color: $backcolor;
+    background-color: $firstBackColor;
 }
 .page {
-    min-width: 28em;
-    max-width: 40em;
+    min-width: 448px;
+    max-width: 640px;
     margin: auto;
 }
 header {
     font-size: 2em;
     padding: 2em;
-    color: $colorAquamarine;
+    color: $buttonsColor;
     text-align: center;
 }
 .todo-add {
@@ -49,21 +50,21 @@ header {
         div {
             float: right;
             padding-right: 1em;
-            color: $colorRed;
+            color: $trashColor;
         }
     }
 }
 
 [type=text]{
     border-width: 0;
-    width: 20em;
+    width: 24em;
     height: 2em;
     background-color: $secondTodoColor;
     border-radius: .3em;
 
     &:focus{
         outline: none;
-        border: .12em solid $colorAquamarine;
+        border: .12em solid $buttonsColor;
         border-radius: .3em;
     }
 }
@@ -72,19 +73,18 @@ header {
     float: left;
     padding: .5em 1em;
     background-color: $secondBackColor;
-    color: $colorwhite;
+    color: $secondTextColor;
     width: 50%;
-    // border: 1px solid red;
 }
 .todo-add-btn, .btnClearCompleted {
     border-width: 0;
-    background-color: $colorAquamarine;
-    color: $blackColor;
+    background-color: $buttonsColor;
+    color: $firstTextColor;
     border-style: none;
     cursor: pointer;
     &:focus, &:hover {
         outline: none;
-        box-shadow: 0 0 1em $colorAquamarine;
+        box-shadow: 0 0 1em $buttonsColor;
         font-weight: bold;
     }
 }
@@ -103,8 +103,9 @@ header {
     border-radius: 1em;
 }
 .todo-items>.completed {
-    background-color: $backcolor;
-    background-image: linear-gradient(0deg,transparent 47%, $blackColor 50%, transparent 53%);
+    color: $secondBackColor;
+    background-color: $completedColor;
+    background-image: linear-gradient(0deg,transparent 47%, $secondBackColor 50%, transparent 53%);
 }
 .summary {
     background-color: $secondBackColor;
@@ -114,4 +115,18 @@ header {
 }
 .hidden {
     display: none;
+}
+
+.filter {
+    background-color: $secondBackColor;
+    color: $secondTextColor;
+    padding: 1em;
+}
+.all-radio, .completed-radio {
+    &::after {
+        content: "|";
+        margin-left: 1em;
+        margin-right: 1em;
+    }
+    
 }

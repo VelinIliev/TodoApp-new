@@ -6,8 +6,8 @@ html, body {
 }
 
 .page {
-  min-width: 28em;
-  max-width: 40em;
+  min-width: 448px;
+  max-width: 640px;
   margin: auto;
 }
 
@@ -25,10 +25,10 @@ header {
 }
 
 .todo-items {
-  background-color: #666;
+  background-color: white;
 }
 .todo-items > :nth-child(2n) {
-  background-color: #999;
+  background-color: #ccc;
 }
 .todo-items li {
   font-size: 1.2em;
@@ -49,9 +49,9 @@ header {
 
 [type=text] {
   border-width: 0;
-  width: 20em;
+  width: 24em;
   height: 2em;
-  background-color: #999;
+  background-color: #ccc;
   border-radius: 0.3em;
 }
 [type=text]:focus {
@@ -98,8 +98,9 @@ header {
 }
 
 .todo-items > .completed {
-  background-color: #333;
-  background-image: linear-gradient(0deg, transparent 47%, #000 50%, transparent 53%);
+  color: #444;
+  background-color: #999;
+  background-image: linear-gradient(0deg, transparent 47%, #444 50%, transparent 53%);
 }
 
 .summary {
@@ -112,4 +113,16 @@ header {
 
 .hidden {
   display: none;
+}
+
+.filter {
+  background-color: #444;
+  color: #fff;
+  padding: 1em;
+}
+
+.all-radio::after, .completed-radio::after {
+  content: "|";
+  margin-left: 1em;
+  margin-right: 1em;
 }/*# sourceMappingURL=main.css.map */

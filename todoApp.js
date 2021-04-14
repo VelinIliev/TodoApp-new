@@ -5,33 +5,67 @@ let dom = {
     totalOutput: document.querySelector('.output'),
     completedOutput: document.querySelector('.output-completed'),
     btnClearCompleted: document.querySelector('.btnClearCompleted'),
+    inputRadio: document.querySelectorAll('[name="filter"]'),
+    all: document.getElementById('all'),
+    completedRadio: document.getElementById('completed-radio'),
+    active: document.getElementById('active'),
 };
 
-let todos = [];
 let count = 0;
 let maxTodos = 10;
+// let localStorage = window.localStorage;
+let todos = JSON.parse(localStorage.getItem('todos')) || [];
 
 function displaySummary() {
     dom.completedOutput.innerHTML = `${count}`;
     dom.totalOutput.innerHTML = `${todos.length}`;
-}
+};
+
+function saveToLocalStorage() {
+    localStorage.setItem('todos',JSON.stringify(todos));
+};
+
+function checkForFilter() {
+    if (dom.all.checked) {
+        return dom.all.value;
+    } else if (dom.completedRadio.checked) {
+        return dom.completedRadio.value;
+    } else if (dom.active.checked) {
+        return dom.active.value;
+    } else {
+        return "all";
+    }
+};
 
 function displayTodos() {
+    let filter = checkForFilter();
     dom.todoList.innerHTML = "";
+    let numeration = 1;
     todos.forEach(todo => {
-        dom.todoList.innerHTML +=   `<li data-id=${todo.id} class="${todo.completed}">
-                                        <span>${todo.id}.</span>
-                                        <span>${todo.title}</span>
-                                        <div class="removeTodo">
-                                            <i class="far fa-trash-alt"></i>
-                                        </div>
-                                    </li>`;
+        let innerHtmlLI =   `<li data-id=${todo.id} class="${todo.status}">
+                                <span>${numeration++}.</span>
+                                <span>${todo.title}</span>
+                                <div class="removeTodo">
+                                    <i class="far fa-trash-alt"></i>
+                                </div>
+                            </li>`;
+        if (filter === 'all') {
+        dom.todoList.innerHTML += innerHtmlLI;
+        } else if (todo.status === filter) {
+            dom.todoList.innerHTML +=  innerHtmlLI;
+        };
     });
-
     count = 0;
-    todos.forEach(todo => {count = (todo.completed === "completed") ? count+1 : count;});
-    displaySummary()
+    todos.forEach(todo => {count = (todo.status === "completed") ? count+1 : count;});
+    if (count>0) {
+        dom.btnClearCompleted.classList.remove('hidden');
+    } else {
+        dom.btnClearCompleted.classList.add('hidden');
+    };
+    saveToLocalStorage();
+    displaySummary();
 };
+
 function createTodos() { 
     if (dom.input.value === "") {
         alert("YOU CAN'T CREATE EMPTY TODO!");
@@ -39,13 +73,13 @@ function createTodos() {
         alert("YOU CAN'T CREATE MORE TODOS!");
     } else {
         let id = (todos.length < 1) ?  1 : (todos[todos.length-1].id)*1+1;
-        let newEl = {
+        let newTodo = {
             id: id,
             title: dom.input.value,
-            completed: "",
+            status: "active",
         };
-        todos = [...todos, newEl];
-    }
+        todos = [...todos, newTodo];
+    };
     displayTodos();
     dom.input.value = "";
     dom.input.focus();
@@ -58,28 +92,26 @@ function deleteTodos(findID) {
 };
 
 function markCompletedTodos(findID) {
-    let i = todos.findIndex(todo => todo.id === findID*1);
-    todos[i].completed = (todos[i].completed === "completed") ? "" : "completed";
-    displayTodos();
-    dom.btnClearCompleted.classList.remove('hidden');
+    let indexToFind = todos.findIndex(todo => todo.id === findID*1);
+    todos[indexToFind].status = (todos[indexToFind].status === "completed") 
+                                ? "active" : "completed";
+    displayTodos(); 
 };
 
 function clearCompletedTodos() {
     let indexToRemove = [];
-    todos.forEach(todo =>   {indexToRemove = (todo.completed === "completed") ? 
-                            [...indexToRemove, todos.findIndex( find => find.id === todo.id)] 
+    todos.forEach(todo =>   {indexToRemove = (todo.status === "completed") ? 
+                            [...indexToRemove, todos.findIndex(find => find.id === todo.id)] 
                             : [...indexToRemove]});
     while(indexToRemove.length) {
         todos.splice(indexToRemove.pop(), 1);
     };
     displayTodos();
-    dom.btnClearCompleted.classList.add('hidden');
-}
+};
 
-displaySummary();
+window.addEventListener('DOMContentLoaded', displayTodos);
 
 dom.btnAdd.addEventListener('click', createTodos);
-
 dom.input.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
         createTodos();
@@ -97,3 +129,7 @@ dom.todoList.addEventListener('click', function(e){
 });
 
 dom.btnClearCompleted.addEventListener('click', clearCompletedTodos);
+
+dom.inputRadio.forEach(function(e){
+    e.addEventListener("click", displayTodos)
+});
