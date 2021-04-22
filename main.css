@@ -25,7 +25,8 @@ header {
 }
 
 .todo-items {
-  background-color: white;
+  background-color: #fff;
+  color: #000;
 }
 .todo-items > :nth-child(2n) {
   background-color: #ccc;
@@ -45,6 +46,12 @@ header {
   float: right;
   padding-right: 1em;
   color: #8e0000;
+}
+.todo-items li .created {
+  float: right;
+  font-size: 0.5em;
+  margin-right: 0.6em;
+  padding-top: 0.9em;
 }
 
 [type=text] {

@@ -1,10 +1,12 @@
-$firstBackColor: #333;
-$secondBackColor: #444;
-$firstTodoColor: white;
+$backgroundColor: #333;
+$headerAndFooter: #444;
+$firstTodoColor: #fff;
 $secondTodoColor: #ccc;
 $buttonsColor: #7fffd4;
+$titleColor: $buttonsColor;
 $completedColor: #999;
-$firstTextColor: #000;
+$completedColorTextAndStroke: #444;
+$TodoAndButtonTextColor: #000;
 $secondTextColor: #fff;
 $trashColor: #8e0000;
 
@@ -12,7 +14,7 @@ html, body {
     margin: 0;
     padding: 0;
     font-size: 16px;
-    background-color: $firstBackColor;
+    background-color: $backgroundColor;
 }
 .page {
     min-width: 448px;
@@ -22,17 +24,18 @@ html, body {
 header {
     font-size: 2em;
     padding: 2em;
-    color: $buttonsColor;
+    color: $titleColor;
     text-align: center;
 }
 .todo-add {
     text-align: center;
     padding: 1em;
-    background-color: $secondBackColor;
+    background-color: $headerAndFooter;
 }
 
 .todo-items {
     background-color: $firstTodoColor;
+    color: $TodoAndButtonTextColor;
     &>:nth-child(2n){
         background-color: $secondTodoColor;
     }
@@ -51,6 +54,12 @@ header {
             float: right;
             padding-right: 1em;
             color: $trashColor;
+        }
+        .created{ 
+            float: right;
+            font-size: .5em;
+            margin-right: .6em;
+            padding-top: .9em;
         }
     }
 }
@@ -72,14 +81,14 @@ header {
 .todos-total, .todos-completed {
     float: left;
     padding: .5em 1em;
-    background-color: $secondBackColor;
+    background-color: $headerAndFooter;
     color: $secondTextColor;
     width: 50%;
 }
 .todo-add-btn, .btnClearCompleted {
     border-width: 0;
     background-color: $buttonsColor;
-    color: $firstTextColor;
+    color: $TodoAndButtonTextColor;
     border-style: none;
     cursor: pointer;
     &:focus, &:hover {
@@ -103,12 +112,12 @@ header {
     border-radius: 1em;
 }
 .todo-items>.completed {
-    color: $secondBackColor;
+    color: $completedColorTextAndStroke;
     background-color: $completedColor;
-    background-image: linear-gradient(0deg,transparent 47%, $secondBackColor 50%, transparent 53%);
+    background-image: linear-gradient(0deg,transparent 47%, $completedColorTextAndStroke 50%, transparent 53%);
 }
 .summary {
-    background-color: $secondBackColor;
+    background-color: $headerAndFooter;
 }
 .clearfix {
     clear: both;
@@ -118,7 +127,7 @@ header {
 }
 
 .filter {
-    background-color: $secondBackColor;
+    background-color: $headerAndFooter;
     color: $secondTextColor;
     padding: 1em;
 }

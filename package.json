@@ -1,0 +1,22 @@
+{
+  "name": "04_todoapp-new",
+  "version": "1.0.0",
+  "description": "first NPM",
+  "main": "todoApp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VelinIliev/04_TodoApp-new.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VelinIliev/04_TodoApp-new/issues"
+  },
+  "homepage": "https://github.com/VelinIliev/04_TodoApp-new#readme",
+  "devDependencies": {
+    "json-server": "^0.16.3"
+  }
+}

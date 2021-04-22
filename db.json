@@ -1,0 +1,22 @@
+{
+  "todos": [
+    {
+      "id": "1",
+      "title": "Learn HTML",
+      "status": "active",
+      "created": "21/04/2021 14:25:15"
+    },
+    {
+      "id": "2",
+      "title": "Learn CSS",
+      "status": "active",
+      "created": "21/04/2021 14:25:16"
+    },
+    {
+      "title": "asd",
+      "status": "completed",
+      "created": "22/04/2021 09:35:28",
+      "id": "jaEEfdm"
+    }
+  ]
+}
