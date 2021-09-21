@@ -1,17 +1,11 @@
-let dom = {
-    inputTodo: document.querySelector("input[type=text]"),
-    btnAdd: document.querySelector('.todo-add-btn'),
-    todoList: document.querySelector('.todo-items'),
-    totalOutput: document.querySelector('.output'),
-    completedOutput: document.querySelector('.output-completed'),
-    btnClearCompleted: document.querySelector('.btnClearCompleted'),
-    inputRadio: document.querySelectorAll('[name="filter"]'),
-    allRadio: document.getElementById('all'),
-    completedRadio: document.getElementById('completed-radio'),
-    activeRadio: document.getElementById('active'),
-};
+const inputTodo = document.querySelector("input[type=text]");
+const btnAdd = document.querySelector('.todo-add-btn');
+const todoList = document.querySelector('.todo-items');
+const btnClearCompleted = document.querySelector('.btnClearCompleted');
+const inputRadio = document.querySelectorAll('[name="filter"]');
 
 const apiURL = 'http://localhost:3000/todos';
+
 const maxTodos = 10;
 let count = 0;
 let todos = [];
@@ -28,24 +22,31 @@ function getCurrentTimeAndDate() {
 };
 
 function displaySummary() {
-    dom.completedOutput.innerHTML = `${count}`;
-    dom.totalOutput.innerHTML = `${todos.length}`;
+    const completedOutput = document.querySelector('.output-completed');
+    const totalOutput = document.querySelector('.output'); 
+
+    completedOutput.innerHTML = `${count}`;
+    totalOutput.innerHTML = `${todos.length}`;
 };
 
 function checkForFilter() {
-    if (dom.allRadio.checked) {
-        return dom.allRadio.value;
-    } else if (dom.completedRadio.checked) {
-        return dom.completedRadio.value;
-    } else if (dom.activeRadio.checked) {
-        return dom.activeRadio.value;
+    const allRadio = document.getElementById('all');
+    const completedRadio = document.getElementById('completed-radio');
+    const activeRadio = document.getElementById('active');
+
+    if (allRadio.checked) {
+        return allRadio.value;
+    } else if (completedRadio.checked) {
+        return completedRadio.value;
+    } else if (activeRadio.checked) {
+        return activeRadio.value;
     } else {
         return "all";
     }
 };
 
 function displayTodos() {
-    dom.todoList.innerHTML = "";
+    todoList.innerHTML = "";
     let filter = checkForFilter();
     let numeration = 1;
 
@@ -59,32 +60,32 @@ function displayTodos() {
                                 <span class="created">${todo.created}</span>
                             </li>`;
         if (filter === 'all') {
-        dom.todoList.innerHTML += todoItems;
+        todoList.innerHTML += todoItems;
         } else if (todo.status === filter) {
-            dom.todoList.innerHTML +=  todoItems;
+            todoList.innerHTML +=  todoItems;
         };
     });
 
     count = 0;
     todos.forEach(todo => {count = (todo.status === "completed") ? count+1 : count;});
     if (count>0) {
-        dom.btnClearCompleted.classList.remove('hidden');
+        btnClearCompleted.classList.remove('hidden');
     } else {
-        dom.btnClearCompleted.classList.add('hidden');
+        btnClearCompleted.classList.add('hidden');
     };
     displaySummary();
 };
 
 function createTodos() {
     getCurrentTimeAndDate();
-    if (dom.inputTodo.value === "") {
+    if (inputTodo.value === "") {
         alert("YOU CAN'T CREATE EMPTY TODO!");
     } else if (todos.length >= maxTodos){
         alert("YOU CAN'T CREATE MORE TODOS!");
     }
     else {
         let newTodo = {
-            title: dom.inputTodo.value,
+            title: inputTodo.value,
             status: "active",
             created: getCurrentTimeAndDate(),
         };
@@ -96,8 +97,8 @@ function createTodos() {
             body: JSON.stringify(newTodo) 
         })
     };
-    dom.inputTodo.value = "";
-    dom.inputTodo.focus();
+    inputTodo.value = "";
+    inputTodo.focus();
 };
 
 function deleteTodos(id) {
@@ -148,15 +149,15 @@ window.addEventListener('DOMContentLoaded', function() {
     .catch(err => console.log(err))
 });
 
-dom.btnAdd.addEventListener('click', createTodos);
+btnAdd.addEventListener('click', createTodos);
 
-dom.inputTodo.addEventListener('keypress', function(e) {
+inputTodo.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
         createTodos();
     }
 });
 
-dom.todoList.addEventListener('click', function(e){
+todoList.addEventListener('click', function(e){
     switch (e.target.tagName) {
         case "I"    : deleteTodos(e.target.parentElement.parentElement.dataset.id); break;
         case 'DIV'  : deleteTodos(e.target.parentElement.dataset.id); break; 
@@ -166,8 +167,8 @@ dom.todoList.addEventListener('click', function(e){
     }
 });
 
-dom.btnClearCompleted.addEventListener('click', clearCompletedTodos);
+btnClearCompleted.addEventListener('click', clearCompletedTodos);
 
-dom.inputRadio.forEach(function(e){
+inputRadio.forEach(function(e){
     e.addEventListener("click", displayTodos)
 });
