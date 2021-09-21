@@ -4,7 +4,7 @@ const todoList = document.querySelector('.todo-items');
 const btnClearCompleted = document.querySelector('.btnClearCompleted');
 const inputRadio = document.querySelectorAll('[name="filter"]');
 
-const apiURL = 'http://localhost:3000/todos';
+const apiURL = 'https://my-json-server.typicode.com/VelinIliev/04_TodoApp-new/todos';
 
 const maxTodos = 10;
 let count = 0;
@@ -46,6 +46,7 @@ function checkForFilter() {
 };
 
 function displayTodos() {
+    console.log(todos);
     todoList.innerHTML = "";
     let filter = checkForFilter();
     let numeration = 1;
@@ -96,6 +97,15 @@ function createTodos() {
             },
             body: JSON.stringify(newTodo) 
         })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            todos = [];
+            fetchingData();
+          })
+        .catch((error) => {
+            console.error('Error:', error);
+          });
     };
     inputTodo.value = "";
     inputTodo.focus();
@@ -138,8 +148,7 @@ function clearCompletedTodos() {
         })
     };
 };
-
-window.addEventListener('DOMContentLoaded', function() {
+function fetchingData() {
     fetch(`${apiURL}`) 
     .then(response => response.json())
     .then(data => {
@@ -147,7 +156,9 @@ window.addEventListener('DOMContentLoaded', function() {
         displayTodos();
     })
     .catch(err => console.log(err))
-});
+}
+
+window.addEventListener('DOMContentLoaded', fetchingData);
 
 btnAdd.addEventListener('click', createTodos);
 
