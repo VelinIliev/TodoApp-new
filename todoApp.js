@@ -145,7 +145,6 @@ window.addEventListener('DOMContentLoaded', function() {
         todos = data;
         displayTodos();
     })
-    // .then( () => displayTodos() )
     .catch(err => console.log(err))
 });
 
@@ -164,7 +163,6 @@ dom.todoList.addEventListener('click', function(e){
         case 'LI'   : markCompletedTodos(e.target.dataset.id); break;
         case 'SPAN' : markCompletedTodos(e.target.parentElement.dataset.id); break;
         default     : console.error("Something went wrong!")
-        // getAttribute('id')
     }
 });
 
