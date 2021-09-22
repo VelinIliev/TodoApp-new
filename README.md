@@ -1,6 +1,8 @@
 # Simple TODO App 
 
 build during the Front-end course Advanced with localStorage and localhost.
+LocalStorage: todoApp-locoalstorage.js
+LocalHost: todoApp.js
 
 ## Screenshot
 
