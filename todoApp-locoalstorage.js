@@ -10,19 +10,24 @@ const maxTodos = 20;
 let count = 0;
 let todos = [];
 
-function saveToLocalStorage() {
-    localStorage.setItem("todos", JSON.stringify(todos));
-};
+const saveToLocalStorage = () => localStorage.setItem("todos", JSON.stringify(todos));
 
-function takeFromLocalStorage() {
-    fetch(`${apiURL}`) 
-    .then(response => response.json())
-    .then(data => {
-        todos = data;
-        localStorage.setItem("todos", JSON.stringify(todos));
+function startingTasks() {
+    if (localStorage.getItem("todos") === null 
+        || JSON.parse(localStorage.getItem('todos')).length === 0 ) {
+        fetch(`${apiURL}`) 
+        .then(response => response.json())
+        .then(data => {
+            todos = data;
+            saveToLocalStorage();
+            displayTodos();
+        })
+        .catch(err => console.log(err))
+    } else {
+        todos = JSON.parse(localStorage.getItem('todos'));
         displayTodos();
-    })
-    .catch(err => console.log(err))
+    }
+    
 };
 
 function getCurrentTimeAndDate() {
@@ -45,19 +50,13 @@ function displaySummary() {
 };
 
 function checkForFilter() {
-    const allRadio = document.getElementById('all');
-    const completedRadio = document.getElementById('completed-radio');
-    const activeRadio = document.getElementById('active');
-
-    if (allRadio.checked) {
-        return allRadio.value;
-    } else if (completedRadio.checked) {
-        return completedRadio.value;
-    } else if (activeRadio.checked) {
-        return activeRadio.value;
-    } else {
-        return "all";
-    }
+    let chekcedRadio;
+    inputRadio.forEach( (el) => { 
+        if (el.checked) { 
+            chekcedRadio = el.value;
+        } 
+    });
+    return chekcedRadio    
 };
 
 function displayTodos() {
@@ -74,7 +73,7 @@ function displayTodos() {
                                 </div>
                                 <span class="created">${todo.created}</span>
                             </li>`;
-        if (filter === 'all') {
+        if (checkForFilter() === 'all') {
         todoList.innerHTML += todoItems;
         } else if (todo.status === filter) {
             todoList.innerHTML +=  todoItems;
@@ -82,8 +81,9 @@ function displayTodos() {
     });
 
     count = 0;
+    
     todos.forEach(todo => {count = (todo.status === "completed") ? count+1 : count;});
-    if (count>0) {
+    if (count > 0) {
         btnClearCompleted.classList.remove('hidden');
     } else {
         btnClearCompleted.classList.add('hidden');
@@ -92,15 +92,13 @@ function displayTodos() {
 };
 
 function createTodos() {
-    getCurrentTimeAndDate();
     if (inputTodo.value === "") {
         alert("YOU CAN'T CREATE EMPTY TODO!");
     } else if (todos.length >= maxTodos){
         alert("YOU CAN'T CREATE MORE TODOS!");
     }
     else {
-        let randomID = Math.floor(Math.random()*1000000)
-        // let id = todos.length;
+        let randomID = Math.floor(Math.random()*10000000)
         let newTodo = {
             id: randomID,
             title: inputTodo.value,
@@ -130,17 +128,19 @@ function markCompletedTodos(findID) {
 };
 
 function clearCompletedTodos() {
-    let idToRemove = [];
-    todos.forEach(todo =>   { idToRemove = (todo.status === "completed") ? 
-                            [...idToRemove, todo.id] : [...idToRemove] } );
-    while(idToRemove.length) {
-        fetch(`${apiURL}/${idToRemove.pop()}`, {
-            method: 'DELETE'
-        })
+    let indexToRemove = [];
+    todos.forEach(todo =>  { indexToRemove = (todo.status === "completed") 
+                            ? [...indexToRemove, todos.findIndex( find => find.id === todo.id)] 
+                            : [...indexToRemove]; 
+                            });
+    while(indexToRemove.length) {
+        todos.splice(indexToRemove.pop(), 1);
     };
+    saveToLocalStorage();
+    displayTodos();
 };
 
-window.addEventListener('DOMContentLoaded', takeFromLocalStorage);
+window.addEventListener('DOMContentLoaded', startingTasks);
 
 btnAdd.addEventListener('click', createTodos);
 
@@ -162,6 +162,7 @@ todoList.addEventListener('click', function(e){
 
 btnClearCompleted.addEventListener('click', clearCompletedTodos);
 
-inputRadio.forEach(function(e){
+inputRadio.forEach(function(e) {
     e.addEventListener("click", displayTodos)
 });
+
