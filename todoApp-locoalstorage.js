@@ -4,11 +4,26 @@ const todoList = document.querySelector('.todo-items');
 const btnClearCompleted = document.querySelector('.btnClearCompleted');
 const inputRadio = document.querySelectorAll('[name="filter"]');
 
-const apiURL = 'http://localhost:3000/todos';
+const apiURL = './db-localstorage.json'
 
-const maxTodos = 10;
+const maxTodos = 20;
 let count = 0;
 let todos = [];
+
+function saveToLocalStorage() {
+    localStorage.setItem("todos", JSON.stringify(todos));
+};
+
+function takeFromLocalStorage() {
+    fetch(`${apiURL}`) 
+    .then(response => response.json())
+    .then(data => {
+        todos = data;
+        localStorage.setItem("todos", JSON.stringify(todos));
+        displayTodos();
+    })
+    .catch(err => console.log(err))
+};
 
 function getCurrentTimeAndDate() {
     let time = new Date();
@@ -84,48 +99,34 @@ function createTodos() {
         alert("YOU CAN'T CREATE MORE TODOS!");
     }
     else {
+        let randomID = Math.floor(Math.random()*1000000)
+        // let id = todos.length;
         let newTodo = {
+            id: randomID,
             title: inputTodo.value,
             status: "active",
             created: getCurrentTimeAndDate(),
         };
-        fetch(`${apiURL}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newTodo) 
-        })
+        todos = [...todos, newTodo];
+        saveToLocalStorage()
+        displayTodos();
     };
     inputTodo.value = "";
     inputTodo.focus();
 };
 
-function deleteTodos(id) {
-    fetch(`${apiURL}/${id}`, {
-        method: 'DELETE',
-    });
+function deleteTodos(findID) {
+    let indexToFind = todos.findIndex(todo => todo.id === findID*1);
+    todos.splice(indexToFind, 1);
+    saveToLocalStorage();
+    displayTodos();
 };
 
-function markCompletedTodos(id) {
-    let statusTmp;
-    fetch(`${apiURL}/${id}`)
-    .then(response => response.json())
-    .then(data => {
-        statusTmp = (data.status === "completed") ? "active" : "completed";
-        goForward(statusTmp);
-    })
-    function goForward(statusTmp) {
-        fetch(`${apiURL}/${id}`, {
-            method: 'PATCH',
-            body: JSON.stringify({
-                status: `${statusTmp}`
-            }),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        }) 
-    }
+function markCompletedTodos(findID) {
+    let i = todos.findIndex(todos => todos.id === findID*1);
+    todos[i].status = (todos[i].status === "completed") ? "active" : "completed";
+    saveToLocalStorage();
+    displayTodos();
 };
 
 function clearCompletedTodos() {
@@ -139,15 +140,7 @@ function clearCompletedTodos() {
     };
 };
 
-window.addEventListener('DOMContentLoaded', function() {
-    fetch(`${apiURL}`) 
-    .then(response => response.json())
-    .then(data => {
-        todos = data;
-        displayTodos();
-    })
-    .catch(err => console.log(err))
-});
+window.addEventListener('DOMContentLoaded', takeFromLocalStorage);
 
 btnAdd.addEventListener('click', createTodos);
 
