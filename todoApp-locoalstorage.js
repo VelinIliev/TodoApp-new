@@ -27,7 +27,6 @@ function startingTasks() {
         todos = JSON.parse(localStorage.getItem('todos'));
         displayTodos();
     }
-    
 };
 
 function getCurrentTimeAndDate() {
@@ -40,16 +39,19 @@ function getCurrentTimeAndDate() {
     let year = time.getFullYear();
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 };
-
+function countCompleted() {
+    count = 0;
+    todos.forEach(todo => {count = (todo.status === "completed") ? count+1 : count});
+}
 function displaySummary() {
     const completedOutput = document.querySelector('.output-completed');
     const totalOutput = document.querySelector('.output'); 
-
+    countCompleted()
     completedOutput.innerHTML = `${count}`;
     totalOutput.innerHTML = `${todos.length}`;
 };
 
-function checkForFilter() {
+function activeFilter() {
     let chekcedRadio;
     inputRadio.forEach( (el) => { 
         if (el.checked) { 
@@ -58,12 +60,17 @@ function checkForFilter() {
     });
     return chekcedRadio    
 };
+function displayCountBtn() {
+    if (count > 0) {
+        btnClearCompleted.classList.remove('hidden');
+    } else {
+        btnClearCompleted.classList.add('hidden');
+    };
+};
 
 function displayTodos() {
     todoList.innerHTML = "";
-    let filter = checkForFilter();
     let numeration = 1;
-
     todos.forEach(todo => {
         let todoItems =   `<li data-id=${todo.id} class="${todo.status}">
                                 <span>${numeration++}.</span>
@@ -73,21 +80,13 @@ function displayTodos() {
                                 </div>
                                 <span class="created">${todo.created}</span>
                             </li>`;
-        if (checkForFilter() === 'all') {
-        todoList.innerHTML += todoItems;
-        } else if (todo.status === filter) {
+        if (activeFilter() === 'all') {
+            todoList.innerHTML += todoItems;
+        } else if (todo.status === activeFilter()) {
             todoList.innerHTML +=  todoItems;
         };
     });
-
-    count = 0;
-    
-    todos.forEach(todo => {count = (todo.status === "completed") ? count+1 : count;});
-    if (count > 0) {
-        btnClearCompleted.classList.remove('hidden');
-    } else {
-        btnClearCompleted.classList.add('hidden');
-    };
+    displayCountBtn();
     displaySummary();
 };
 
