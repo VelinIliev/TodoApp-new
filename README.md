@@ -9,7 +9,7 @@ build during the Front-end course Advanced with localStorage and localhost.
 
 ## Links
 
-- Live Site URL: [](http://drumbi.eu/02-AdvancedCourse/03_TODOApp-new/)
+- Live Site URL: [http://drumbi.eu/02-AdvancedCourse/03_TODOApp-new/](http://drumbi.eu/02-AdvancedCourse/03_TODOApp-new/)
 
 ## Built with
 
