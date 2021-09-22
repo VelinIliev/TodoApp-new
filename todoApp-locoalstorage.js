@@ -12,7 +12,7 @@ let todos = [];
 
 const saveToLocalStorage = () => localStorage.setItem("todos", JSON.stringify(todos));
 
-function startingTasks() {
+function initState() {
     if (localStorage.getItem("todos") === null 
         || JSON.parse(localStorage.getItem('todos')).length === 0 ) {
         fetch(`${apiURL}`) 
@@ -86,8 +86,9 @@ function displayTodos() {
             todoList.innerHTML +=  todoItems;
         };
     });
-    displayCountBtn();
     displaySummary();
+    displayCountBtn();
+    
 };
 
 function createTodos() {
@@ -95,6 +96,8 @@ function createTodos() {
         alert("YOU CAN'T CREATE EMPTY TODO!");
     } else if (todos.length >= maxTodos){
         alert("YOU CAN'T CREATE MORE TODOS!");
+    } else if (inputTodo.value.length > 40) {
+        alert("NO MORE THAN 40 SYMBOLS");
     }
     else {
         let randomID = Math.floor(Math.random()*10000000)
@@ -139,7 +142,7 @@ function clearCompletedTodos() {
     displayTodos();
 };
 
-window.addEventListener('DOMContentLoaded', startingTasks);
+window.addEventListener('DOMContentLoaded', initState);
 
 btnAdd.addEventListener('click', createTodos);
 
