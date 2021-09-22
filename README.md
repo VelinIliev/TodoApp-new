@@ -11,7 +11,10 @@ LocalHost: todoApp.js
 
 ## Links
 
-- Live Site URL: [http://drumbi.eu/02-AdvancedCourse/03_TODOApp-new/](http://drumbi.eu/02-AdvancedCourse/03_TODOApp-new/)
+- Live Site URL:  
+[http://drumbi.eu/02-AdvancedCourse/03_TODOApp-new/](http://drumbi.eu/02-AdvancedCourse/03_TODOApp-new/)  
+and  
+[https://veliniliev.github.io/04_TodoApp-new/](https://veliniliev.github.io/04_TodoApp-new/)
 
 ## Built with
 
