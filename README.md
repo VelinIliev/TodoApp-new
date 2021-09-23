@@ -4,11 +4,6 @@ Simple REST App, build with localStorage and localhost.
 LocalStorage: todoApp-locoalstorage.js  
 LocalHost: todoApp.js
 
-## Screenshot
-
-![](./screenShot/todoApp.jpg)
-
-
 ## Links
 
 - Live Site URL:  
@@ -22,6 +17,6 @@ and
 - CSS / SASS
 - JAVASCRIPT
 
+## Screenshot
 
-
-
+![](./screenShot/todoApp.jpg)
